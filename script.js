@@ -3,11 +3,11 @@
 
 // Application State
 const appState = {
-    apiKey: null,
+    apiKey: "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",
     currentChatId: null,
     chats: {},
     selectedModel: 'openai/gpt-oss-20b:free',
-    // NO fallback models — absolutely none
+
     fallbackModels: [],
     settings: {
         temperature: 1.0,
@@ -1241,4 +1241,5 @@ function playSoundSafely(audioElement) {
         }
     });
 }
+
 
