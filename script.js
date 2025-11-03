@@ -244,7 +244,7 @@ function initRichTextEditor() {
             document.execCommand('insertText', false, '    ');
         }
 
-        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+        if (event.key === 'Enter' && !event.shiftKey) {
             e.preventDefault();
             sendMessage();
             return;
@@ -1135,7 +1135,7 @@ async function callApi(waitingIndicator) {
 }
 
 function handlePromptKeydown(event) {
-    if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
+    if (event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault();
         sendMessage();
     }
@@ -1241,3 +1241,4 @@ function playSoundSafely(audioElement) {
         }
     });
 }
+
