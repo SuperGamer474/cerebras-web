@@ -62,9 +62,6 @@ const elements = {
     apiKeySubmit: document.getElementById('apiKeySubmit'),
     leavePageModal: document.getElementById('leavePageModal'),
     confirmLeavePage: document.getElementById('confirmLeavePage'),
-    sidebar: document.getElementById('sidebar'),
-    chatHistorySidebar: document.getElementById('chatHistorySidebar'),
-    toggleSidebarBtn: document.getElementById('toggleSidebarBtn'),
     chatMessages: document.getElementById('chatMessages'),
     promptEditor: document.getElementById('promptEditor'),
     sendMessageBtn: document.getElementById('sendMessageBtn'),
@@ -208,7 +205,6 @@ function initEventListeners() {
     if (elements.confirmLeavePage) elements.confirmLeavePage.addEventListener('click', () => window.close());
 
     // Chat UI
-    if (elements.toggleSidebarBtn) elements.toggleSidebarBtn.addEventListener('click', toggleSidebar);
     if (elements.promptEditor) {
         elements.promptEditor.addEventListener('keydown', handlePromptKeydown);
         elements.promptEditor.addEventListener('input', updateTokenCount);
@@ -483,8 +479,6 @@ function initializeAfterAuth() {
         const lastChatId = chatIds[chatIds.length - 1];
         loadChat(lastChatId);
     }
-
-    updateChatHistorySidebar();
 }
 
 function loadAppState() {
@@ -564,32 +558,6 @@ function changeModel(modelValue, modelLabel) {
     saveAppState();
 }
 
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('mainContent');
-
-    if (!sidebar || !mainContent) return;
-
-    if (sidebar.classList.contains('d-md-block')) {
-        sidebar.classList.remove('d-md-block');
-        sidebar.classList.add('d-none');
-        mainContent.classList.add('expanded');
-        mainContent.classList.remove('col-md-9', 'col-lg-10');
-        mainContent.classList.add('col-12');
-    } else {
-        sidebar.classList.add('d-md-block');
-        sidebar.classList.remove('d-none');
-        mainContent.classList.remove('expanded');
-        mainContent.classList.remove('col-12');
-        mainContent.classList.add('col-md-9', 'col-lg-10');
-    }
-
-    setTimeout(() => {
-        window.dispatchEvent(new Event('resize'));
-        forceScrollToBottom();
-    }, 10);
-}
-
 function createNewChat() {
     const chatId = 'chat_' + Date.now();
     appState.chats[chatId] = {
@@ -604,7 +572,6 @@ function createNewChat() {
     elements.chatMessages && (elements.chatMessages.innerHTML = '');
     if (elements.promptEditor) elements.promptEditor.innerHTML = '';
     clearUploadedFiles();
-    updateChatHistorySidebar();
     saveAppState();
 
     const systemMessageElement = document.createElement('div');
@@ -616,40 +583,6 @@ function createNewChat() {
 function getModelLabel(modelValue) {
     const model = models.find(m => m.value === modelValue);
     return model ? model.label : modelValue;
-}
-
-function updateChatHistorySidebar() {
-    if (!elements.chatHistorySidebar) return;
-    elements.chatHistorySidebar.innerHTML = '';
-
-    const sortedChatIds = Object.keys(appState.chats).sort((a, b) => {
-        return new Date(appState.chats[b].createdAt) - new Date(appState.chats[a].createdAt);
-    });
-
-    sortedChatIds.forEach(chatId => {
-        const chat = appState.chats[chatId];
-        const chatItem = document.createElement('div');
-        chatItem.className = 'chat-history-item';
-        chatItem.dataset.chatId = chatId;
-
-        if (chatId === appState.currentChatId) chatItem.classList.add('active');
-
-        let chatTitle = chat.title;
-        if (chat.messages.length > 0) {
-            const firstUserMessage = chat.messages.find(msg => msg.role === 'user');
-            if (firstUserMessage) {
-                chatTitle = firstUserMessage.content.split('\n')[0].substring(0, 30);
-                if (firstUserMessage.content.length > 30) chatTitle += '...';
-            }
-        }
-
-        chatItem.textContent = chatTitle;
-        const createdDate = new Date(chat.createdAt);
-        chatItem.title = createdDate.toLocaleString();
-
-        chatItem.addEventListener('click', () => loadChat(chatId));
-        elements.chatHistorySidebar.appendChild(chatItem);
-    });
 }
 
 function loadChat(chatId) {
@@ -1128,7 +1061,6 @@ async function callApi(waitingIndicator) {
         }
 
         saveAppState();
-        updateChatHistorySidebar();
 
     } catch (error) {
         console.error('API Error:', error);
@@ -1186,7 +1118,6 @@ function handleImportChat(event) {
             appState.chats[newChatId] = importedChat;
             saveAppState();
             loadChat(newChatId);
-            updateChatHistorySidebar();
             const systemMessageElement = document.createElement('div');
             systemMessageElement.className = 'system-message';
             systemMessageElement.textContent = 'Chat imported successfully';
@@ -1205,7 +1136,6 @@ function deleteCurrentChat() {
     saveAppState();
     const chatIds = Object.keys(appState.chats);
     if (chatIds.length > 0) loadChat(chatIds[0]); else createNewChat();
-    updateChatHistorySidebar();
 }
 
 function forceScrollToBottom() {
@@ -1258,6 +1188,7 @@ function playSoundSafely(audioElement) {
         }
     });
 }
+
 
 
 
