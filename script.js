@@ -3,7 +3,7 @@
 
 // Application State
 const appState = {
-    apiKey: "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",
+    apiKey: "null",
     currentChatId: null,
     chats: {},
     selectedModel: 'openai/gpt-oss-20b:free',
@@ -33,6 +33,22 @@ const appState = {
     currentlyStreaming: false,
     streamController: null
 };
+
+async function fetchApiKey() {
+    try {
+        const response = await fetch('https://supergamer474.pythonanywhere.com/openrouter-api-key');
+        if (!response.ok) throw new Error('Failed to fetch API key');
+        const data = await response.text(); // assuming the key is just plain text
+        const apiKey = data.trim();
+        appState.apiKey = apiKey;
+        localStorage.setItem('apiKey', apiKey);
+        sessionStorage.setItem('apiKey', apiKey);
+        console.log('API key loaded successfully ✅');
+    } catch (err) {
+        console.error('Error fetching API key:', err);
+        appState.apiKey = ''; // fallback to empty
+    }
+}
 
 // ONE model only
 const models = [
@@ -100,6 +116,7 @@ let apiKeyModalInstance, modelSettingsModalInstance, leavePageModalInstance;
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
+    (async () => {
     // Initialize Bootstrap tooltips if bootstrap exists
     try {
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -120,9 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize AOS animations if available
     try { AOS.init({ duration: 800, once: true }); } catch (e) { /* ignore */ }
 
-    // Load api key from sessionStorage or localStorage automatically — NO POPUP
-    const storedApiKey = sessionStorage.getItem('apiKey') || localStorage.getItem('apiKey') || '';
-    appState.apiKey = storedApiKey || ''; // will be empty string if not set
+    // Load api key
+    await fetchApiKey();
 
     // Initialize Event Listeners
     initEventListeners();
@@ -146,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // After basic init, continue app flow
     initializeAfterAuth(); // don't wait for a key — app is usable and key can be saved from settings
+    })();
 });
 
 function preloadSounds() {
@@ -1241,5 +1258,6 @@ function playSoundSafely(audioElement) {
         }
     });
 }
+
 
 
