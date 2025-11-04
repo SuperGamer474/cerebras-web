@@ -782,9 +782,6 @@ function renderMessage(message) {
                 </button>
             </div>
             <div class="message-content">${message.content.replace(/\n/g, '<br>')}</div>
-            <div class="bubble-metadata">
-                <div>${new Date(message.timestamp).toLocaleTimeString()}</div>
-            </div>
         `;
     } else {
         contentHTML = `
@@ -797,12 +794,6 @@ function renderMessage(message) {
                 </button>
             </div>
             <div class="markdown-content">${marked.parse(message.content || '')}</div>
-            <div class="bubble-metadata">
-                <div>Model: ${getModelLabel(message.model || appState.selectedModel)}</div>
-                ${message.processingTime ? `<div>Time: ${message.processingTime.toFixed(2)}s</div>` : ''}
-                ${message.usage?.total_tokens ? `<div>Tokens: ${message.usage.total_tokens}</div>` : ''}
-                <div>${new Date(message.timestamp).toLocaleTimeString()}</div>
-            </div>
         `;
     }
 
@@ -1000,12 +991,8 @@ async function callApi(waitingIndicator) {
                                 if (parsedData.choices[0]?.finish_reason) assistantMessage.finish_reason = parsedData.choices[0].finish_reason;
                                 if (parsedData.usage) {
                                     assistantMessage.usage = parsedData.usage;
-                                    const metadataElement = messageBubble.querySelector('.bubble-metadata');
-                                    if (metadataElement) {
-                                        const endTime = Date.now();
-                                        const processingTime = (endTime - startTime) / 1000;
-                                        assistantMessage.processingTime = processingTime;
-                                        metadataElement.innerHTML = `\n                                            <div>Model: ${getModelLabel(assistantMessage.model)}</div>\n                                            <div>Time: ${processingTime.toFixed(2)}s</div>\n                                            <div>Tokens: ${assistantMessage.usage.total_tokens || 'N/A'}</div>\n                                            <div>${new Date(assistantMessage.timestamp).toLocaleTimeString()}</div>\n                                        `;
+                                    if (parsedData.usage) {
+                                        assistantMessage.usage = parsedData.usage;
                                     }
                                 }
                             } catch (e) {
@@ -1184,6 +1171,7 @@ function playSoundSafely(audioElement) {
         }
     });
 }
+
 
 
 
