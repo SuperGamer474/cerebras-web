@@ -1,12 +1,12 @@
-// FULL UPDATED CHAT APP JS — Locked to GPT OSS 20B only and NO API KEY POPUP
-// Model: openai/gpt-oss-20b:free (labelled 'GPT OSS 20B')
+// FULL UPDATED CHAT APP JS — Locked to GPT OSS 120B only and NO API KEY POPUP
+// Model: gpt-oss-120b (labelled 'GPT OSS 120B')
 
 // Application State
 const appState = {
     apiKey: "null",
     currentChatId: null,
     chats: {},
-    selectedModel: 'openai/gpt-oss-20b:free',
+    selectedModel: 'gpt-oss-120b',
 
     fallbackModels: [],
     settings: {
@@ -49,7 +49,7 @@ async function fetchApiKey() {
 
 // ONE model only
 const models = [
-    { label: 'GPT OSS 20B', value: 'openai/gpt-oss-20b:free', context: 131072 }
+    { label: 'GPT OSS 120B', value: 'gpt-oss-120b', context: 131072 }
 ];
 
 // DOM Elements
@@ -487,8 +487,8 @@ function loadAppState() {
             appState.selectedModel = parsedState.selectedModel || appState.selectedModel;
             appState.settings = parsedState.settings || appState.settings;
 
-            // If the selected model somehow got changed elsewhere, force back to GPT OSS 20B
-            appState.selectedModel = 'openai/gpt-oss-20b:free';
+            // If the selected model somehow got changed elsewhere, force back to GPT OSS 120B
+            appState.selectedModel = 'gpt-oss-120b';
 
             updateModelDropdown();
             initializeSettingsUI();
@@ -548,9 +548,9 @@ function updateModelDropdown() {
 }
 
 function changeModel(modelValue, modelLabel) {
-    // Force lock to GPT OSS 20B — ignore attempts to select anything else
-    appState.selectedModel = 'openai/gpt-oss-20b:free';
-    elements.modelDropdown && (elements.modelDropdown.textContent = 'GPT OSS 20B');
+    // Force lock to GPT OSS 120B — ignore attempts to select anything else
+    appState.selectedModel = 'gpt-oss-120b';
+    elements.modelDropdown && (elements.modelDropdown.textContent = 'GPT OSS 120B');
     createNewChat();
     saveAppState();
 }
@@ -573,7 +573,7 @@ function createNewChat() {
 
     const systemMessageElement = document.createElement('div');
     systemMessageElement.className = 'system-message';
-    systemMessageElement.textContent = `New conversation started with GPT OSS 20B`;
+    systemMessageElement.textContent = `New conversation started with GPT OSS 120B`;
     elements.chatMessages && elements.chatMessages.appendChild(systemMessageElement);
 }
 
@@ -1185,6 +1185,7 @@ function playSoundSafely(audioElement) {
         }
     });
 }
+
 
 
 
