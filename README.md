@@ -1,16 +1,15 @@
 # LLM Chat Application
 
-A simple, standalone web-based chat interface for LLMs using the OpenRouter API. Built with vanilla JavaScript, HTML, and CSS.
+A simple, standalone web-based chat interface for LLMs using the Cerebras API. Built with vanilla JavaScript, HTML, and CSS.
 
 ## Features
 
 - **Clean, Modern Interface**: Intuitive chat UI similar to popular platforms like ChatGPT and Claude
-- **OpenRouter API Integration**: Access to multiple LLM models through a single interface
+- **Cerebras API Integration**: Access to GPT OSS 120B LLM model through a single interface
 - **Rich Text Support**: Markdown rendering and code syntax highlighting
 - **File Upload**: Add context to your prompts by uploading text files
 - **Streaming Responses**: See model responses in real-time as they're generated
 - **Conversation Management**: Save, load, export, and import conversations
-- **Model Selection**: Choose from various models with different context windows
 - **Advanced Settings**: Fine-tune model parameters like `temperature`, `top_p`, and more
 - **Persistence**: Chat history stored in `localStorage` for data preservation
 - **Mobile Responsive**: Works well on desktop, tablet, and mobile devices
@@ -19,7 +18,7 @@ A simple, standalone web-based chat interface for LLMs using the OpenRouter API.
 
 ### Prerequisites
 
-- An OpenRouter API key (sign up at [OpenRouter.ai](https://openrouter.ai))
+- A Cerebras API key (sign up at [cloud.cerebras.ai](https://cloud.cerebras.ai))
 - A modern web browser (Chrome, Firefox, Safari, Edge)
 - A web server (optional for local development)
 
@@ -27,12 +26,12 @@ A simple, standalone web-based chat interface for LLMs using the OpenRouter API.
 
 1. Clone this repository:
    ```
-   git clone https://github.com/josephgodwinkimani/openrouter-web.git
+   git clone https://github.com/SuperGamer474/cerebras-web.git
    ```
 
 2. Navigate to the project directory:
    ```
-   cd openrouter-web
+   cd cerebras-web
    ```
 
 3. Open the `index.html` file in your browser or serve it with a local server
@@ -50,26 +49,14 @@ Then access the application at `http://localhost:8000`.
 
 ### Usage
 
-1. When you first access the application, you'll be prompted to enter your OpenRouter API key
-2. Select a model from the dropdown menu at the top of the screen
-3. Type your message in the input field at the bottom of the screen
-4. (Optional) Upload text files by clicking the paperclip icon
-5. Press Enter or click the send button to submit your message
-6. View the model's response as it streams in real-time
+1. Type your message in the input field at the bottom of the screen
+2. (Optional) Upload text files by clicking the paperclip icon
+3. Press Enter or click the send button to submit your message
+4. View the model's response as it streams in real-time
 
-## Models
+## The Model
 
-The application supports the following models from OpenRouter:
-
-- DeepSeek V3 0324 (163,840 context)
-- DeepSeek R1 (163,840 context)
-- Gemini 2.0 Flash (1,048,576 context)
-- DeepSeek V3 Base (163,840 context)
-- DeepSeek R1 Zero (163,840 context)
-- Gemma 3 27B (131,072 context)
-- Qwen 2.5 VL 72B (131,072 context)
-- Llama 3.2 1B (131,072 context)
-- DeepSeek R1 Distill Llama 70B (128,000 context)
+The application supports the 'GPT OSS 120B' model from Cerebras.
 
 ## Advanced Settings
 
@@ -103,14 +90,14 @@ When you upload a file, its content will be appended to your prompt in a structu
 
 ## Managing Conversations
 
-- **New Chat**: Start a new conversation with the current model
 - **Export Chat**: Save the current conversation as a JSON file
 - **Import Chat**: Load a previously exported conversation
 - **Delete Chat**: Remove the current conversation from history
 
 ## Keyboard Shortcuts
 
-- **Ctrl+Enter** / **Cmd+Enter**: Send message
+- **Enter**: Send message
+- **Shift+Enter**: Newline in message
 - **Ctrl+N** / **Cmd+N**: New chat
 
 
@@ -126,7 +113,8 @@ This project is licensed under the MIT License.
 
 ## Acknowledgments
 
-- OpenRouter API for providing access to multiple LLM models
+- Cerebras API for providing access to the LLM model
+- **josephgodwinkimani** for the original openrouter-web code
 - Bootstrap team for the responsive design framework
 - Any & all the open-source libraries used in this project
 
